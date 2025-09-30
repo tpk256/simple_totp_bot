@@ -30,7 +30,7 @@ async def update_code(callback_query: types.CallbackQuery):
         [InlineKeyboardButton(text="Обновить", callback_data="update_code")],
     ])
     await callback_query.message.edit_text(
-        f"Текущий код: {TOTP.generate()}, срок жизни: {time_live % 30 :.2f} / 30",
+        f"Текущий код: {TOTP.generate():06}, срок жизни: {time_live % 30 :.2f} / 30",
         reply_markup=kb_update_code
     )
     await callback_query.answer()
@@ -49,7 +49,7 @@ async def get_code(msg: Message):
     kb_update_code = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text="Обновить", callback_data="update_code")],
     ])
-    await msg.answer(f"Текущий код: {TOTP.generate()}, срок жизни: {time_live % 30 :.2f} / 30",
+    await msg.answer(f"Текущий код: {TOTP.generate():06}, срок жизни: {time_live % 30 :.2f} / 30",
                      reply_markup=kb_update_code
     )
 
