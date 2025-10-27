@@ -62,6 +62,9 @@ async def main():
                 f"Дата и время последнего обновления: {dt}\n"
                 f"УЗ: {users[1][1]}\n"
                 f"Текущий код: {users[1][0].generate():06}, срок жизни: {time_live % 30 :.2f} / 30\n"
+                f"Дата и время последнего обновления: {dt}\n"
+                f"УЗ: {users[2][1]}\n"
+                f"Текущий код: {users[2][0].generate():06}, срок жизни: {time_live % 30 :.2f} / 30\n"
                 f"Дата и время последнего обновления: {dt}"
 
                 ,
@@ -70,16 +73,22 @@ async def main():
             )
             await asyncio.sleep(interval)
         except TelegramRetryAfter as e:
-            await asyncio.sleep(e.retry_after)
-            await bot.send_message(
-                chat_id=config.tg_admin_id,
-                text="был флуд"
-            )
+            try:
+                await asyncio.sleep(e.retry_after + 1)
+                await bot.send_message(
+                    chat_id=config.tg_admin_id,
+                    text="был флуд"
+                )
+            except Exception as e:
+                print(e)
         except Exception as e:
-            await bot.send_message(
-                chat_id=config.tg_admin_id,
-                text=f"Неизвестная ошибка {e}"
-            )
+            try:
+                await bot.send_message(
+                    chat_id=config.tg_admin_id,
+                    text=f"Неизвестная ошибка {e}"
+                )
+            except Exception as e:
+                print(e)
 
 
 
